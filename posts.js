@@ -1,10 +1,12 @@
 const { createStore, applyMiddleware } = require("redux");
-const loggerMiddleware = require("redux-logger").createLogger();
+
 
 // initial state
 
 const initialState = {
   posts: [],
+  error: "",
+  loading: false,
 };
 
 // custom middleware
@@ -18,24 +20,30 @@ const customLogger = () => {
   next(action);
 };
 
+// actions constants
+
+const REQUEST_STARTED = "REQUEST_STARTED";
+const FETCH_SUCCESS = "FETCH_SUCCESS";
+const FETCH_FAILED = "REQUEST_FAILED";
+
 // actions
 
 const fetchPostsRequest = () => {
   return {
-    type: "FETCH_DISPATCHED",
+    type: REQUEST_STARTED,
     payload: { name: "Xara" },
   };
 };
 
 const fetchPostsSuccess = () => {
   return {
-    type: "FETCH_SUCCESS",
+    type: FETCH_SUCCESS,
   };
 };
 
 const fetchPostsFailed = () => {
   return {
-    type: "FETCH_FAILED",
+    type: FETCH_FAILED,
   };
 };
 
@@ -43,7 +51,7 @@ const fetchPostsFailed = () => {
 
 const postReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "FETCH_DISPATCHED":
+    case REQUEST_STARTED:
       return {
         posts: { name: "Lucy" },
       };
